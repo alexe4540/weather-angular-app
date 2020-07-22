@@ -1,0 +1,21 @@
+<div class="row" *ngIf="curentWeather">
+  <div class="col s12 m5">
+    <div class="card">
+      <div class="card-content">
+        <h1>{{curentWeather.city}}</h1>
+        <p>Longitude: {{curentWeather.coord.lon}}, Latitude: {{curentWeather.coord.lat}}</p>
+
+        <h4>Temperature</h4>
+        <p>Actual temperature: {{curentWeather.temp}}</p>
+        <p>Feels Like: {{curentWeather.feels_like}}</p>
+
+        <h4>Other</h4>
+        <p>Humidity: {{curentWeather.humidity}}</p>
+        <p>Pressure: {{curentWeather.pressure}}</p>
+        <p>Sky: {{curentWeather.sky}}</p>
+        <p>Wind speed: {{curentWeather.wind_speed}}</p>
+        <p>Wind deg: {{curentWeather.wind_deg}}</p>
+      </div>
+    </div>
+  </div>
+</div>
