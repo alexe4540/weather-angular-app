@@ -3,14 +3,15 @@ import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { tap, map, catchError, filter } from 'rxjs/operators';
+import { InputWeather, OutputWeather } from './model/weather';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
 
-  cityNameSub = new Subject<any>();
-  cityName;
+  cityWeatherSub = new Subject<any>();
+  cityWeather: Observable<OutputWeather[] | OutputWeather>;
   private apiKey = '8d69e1d2ea361688191863773beb8f78';
   private apiUrl = `https://api.openweathermap.org/data/2.5/`;
 
@@ -21,7 +22,7 @@ export class WeatherService {
     if (name) {
       const url = this.apiUrl + `weather?q=${name}&appid=${this.apiKey}&units=metric`;
 
-      this.cityName = this.http.get(url)
+      this.cityWeather = this.http.get<InputWeather>(url)
         .pipe(
           //  ToDo: забрать только нужны данные из ответа
           map(v => ({
@@ -39,17 +40,16 @@ export class WeatherService {
         );
     }
 
-    if (this.cityName) {
-      this.cityName.subscribe(value => this.cityNameSub.next(value));
+    if (this.cityWeather) {
+      this.cityWeather.subscribe(value => this.cityWeatherSub.next(value));
     }
   }
 
   getWetaherPrediction(name: string) {
     if (name) {
       const url = this.apiUrl + `/forecast?q=${name}&appid=${this.apiKey}&units=metric`;
-      this.cityName = this.http.get(url)
+      this.cityWeather = this.http.get<InputWeather>(url)
         .pipe(
-          //  ToDo: забрать только нужны данные из ответа
           map(v => (
             v.list
           )),
@@ -68,8 +68,8 @@ export class WeatherService {
         );
     }
 
-    if (this.cityName) {
-      this.cityName.subscribe(value => this.cityNameSub.next(value));
+    if (this.cityWeather) {
+      this.cityWeather.subscribe(value => this.cityWeatherSub.next(value));
     }
   }
 
